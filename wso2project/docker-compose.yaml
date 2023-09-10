@@ -1,0 +1,56 @@
+version: '2.1'
+services:
+  
+  wso2_container:
+   image: wso2/wso2am:latest
+   container_name: wso2
+   ports:
+     - "9443:9443"
+     - "8243:8243"
+     - "8280:8280"
+     - "5005:5005"
+ 
+   environment:
+     - USER=root
+   #  - JAEGER_AGENT_HOST=jaeger
+   #  - JAEGER_AGENT_PORT=6831
+   #  - JAEGER_SERVICE_NAME=my-wso2-service
+   #  - JAEGER_SAMPLER_TYPE=const
+   #  - JAEGER_SAMPLER_PARAM=1
+   #  - JAEGER_REPORTER_LOG_SPANS=true
+   #  - JAEGER_REPORTER_FLUSH_INTERVAL=500ms
+   #  - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
+   #  - HOST_NAME=testwso2
+   #  - WSO2_ANALYTICS_ENABLED=false
+   #  - WSO2_IS_ANALYTICS_ENABLED=false
+   #  - WSO2_CARBON_DB_URL=jdbc:mysql://databasemysql:3306/wso2carbon_db?useSSL=false
+   #  - WSO2_CARBON_DB_USERNAME=user
+   #  - WSO2_CARBON_DB_PASSWORD=123456789!6mJb
+   #  - WSO2_USER=user
+   #  - WSO2_PASSWORD=myname
+   #  - WSO2_APIM_GT_WK=true
+   #  - WSO2_APIM_KEY_MANAGER_GT_WK=true
+   networks:
+       site2_mynet:
+         ipv4_address: 172.28.5.32    
+   volumes:
+     - wso2_data2:/home/wso2carbon/wso2am-4.0.0/repository/deployment/server/
+     - wso2_conf2:/home/wso2carbon/wso2am-4.0.0/repository/conf/
+     - ./config/log4j2.properties:/home/wso2carbon/wso2am-4.0.0/repository/conf/log4j2.properties
+     - ./config/deployment.toml:/home/wso2carbon/wso2am-4.0.0/repository/conf/deployment.toml
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      site2_mynet:
+         ipv4_address: 172.28.5.30
+
+networks:
+  site2_mynet:
+    external: true
+volumes:
+  wso2_data2:
+  wso2_conf2:
