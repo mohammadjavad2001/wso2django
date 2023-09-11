@@ -20,13 +20,16 @@ from django.urls import path,include
 from django.conf.urls.static import static
 #from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 schema_view = get_swagger_view(title='K8s API')
 
 urlpatterns = [
     path("doc/", schema_view),
-
     path('admin/', admin.site.urls),
     path('wso2/', include('wso2_app.urls')),
     
 ] 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
