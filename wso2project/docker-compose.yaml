@@ -12,24 +12,6 @@ services:
  
    environment:
      - USER=root
-   #  - JAEGER_AGENT_HOST=jaeger
-   #  - JAEGER_AGENT_PORT=6831
-   #  - JAEGER_SERVICE_NAME=my-wso2-service
-   #  - JAEGER_SAMPLER_TYPE=const
-   #  - JAEGER_SAMPLER_PARAM=1
-   #  - JAEGER_REPORTER_LOG_SPANS=true
-   #  - JAEGER_REPORTER_FLUSH_INTERVAL=500ms
-   #  - JAEGER_SAMPLER_MANAGER_HOST_PORT=jaeger:5778
-   #  - HOST_NAME=testwso2
-   #  - WSO2_ANALYTICS_ENABLED=false
-   #  - WSO2_IS_ANALYTICS_ENABLED=false
-   #  - WSO2_CARBON_DB_URL=jdbc:mysql://databasemysql:3306/wso2carbon_db?useSSL=false
-   #  - WSO2_CARBON_DB_USERNAME=user
-   #  - WSO2_CARBON_DB_PASSWORD=123456789!6mJb
-   #  - WSO2_USER=user
-   #  - WSO2_PASSWORD=myname
-   #  - WSO2_APIM_GT_WK=true
-   #  - WSO2_APIM_KEY_MANAGER_GT_WK=true
    networks:
        site2_mynet:
          ipv4_address: 172.28.5.32    
