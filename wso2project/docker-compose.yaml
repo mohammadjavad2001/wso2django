@@ -3,7 +3,7 @@ services:
   
   wso2_container:
    image: wso2/wso2am:latest
-   container_name: wso2
+   container_name: wso22
    ports:
      - "9443:9443"
      - "8243:8243"

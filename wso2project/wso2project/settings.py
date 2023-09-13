@@ -125,6 +125,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',# Make sure this line is included
         # ...
     ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 # Static files (CSS, JavaScript, Images)

@@ -1,29 +1,12 @@
-import logging
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import status, permissions
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import SessionAuthentication
-from hashlib import sha256
-from django.http import JsonResponse
-import time
-from rest_framework_simplejwt.tokens import RefreshToken
-
-from wso2_app.serializers import UploadedFileSerializer
+from rest_framework.permissions import  AllowAny
 from .models import *
-from django.core.cache import cache
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
-import uuid
-import json
-import random
-from django.utils import timezone
-from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
 import base64
 import requests
-import subprocess
 
 @api_view(['POST'])
 @permission_classes((AllowAny,))
@@ -46,6 +29,7 @@ def register(request):
                     'Content-Type': 'application/json'
                     }
         print(headers)
+        
         
         data={   "callbackUrl":"http://192.168.107.23:8000/wso2/register/",
                  "clientName":"rest_api_publisher",
@@ -101,7 +85,6 @@ def get_token(request):
 def get_apis(request):
     try:
        # curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8" "https://127.0.0.1:9443/api/am/publisher/v2/apis"
-
         authorization_header = request.META.get("HTTP_AUTHORIZATION")
         print(authorization_header,"ADAD")
         if authorization_header:
@@ -135,7 +118,7 @@ def creatre_api(request):
         version=request.data.get("version")
         provider=request.data.get("provider")
         lifeCycleStatus=request.data.get("lifeCycleStatus")
-        
+        data1=request.data
         data = {
             "name": f'{name}',
             "description": f'{description}',
@@ -157,7 +140,7 @@ def creatre_api(request):
                    'Authorization': f'Bearer {bearer_token}',
                     'Content-Type': 'application/json'                   
                   }
-        response = requests.post(url=url, headers=headers, json=data, verify=False)  # Use verify=False to ignore SSL 
+        response = requests.post(url=url, headers=headers, json=data1, verify=False)  # Use verify=False to ignore SSL 
         try:
             return Response(status=response.status_code,data=response.json())
         except Exception:
@@ -195,7 +178,7 @@ class API_RUD(APIView):
             version=request.data.get("version")
             description=request.data.get("description")
             
-
+            data1=request.data
             data = {
                 "name": f'{name}',
                 "context": f'{context}',
@@ -215,7 +198,7 @@ class API_RUD(APIView):
                                'Authorization': f'Bearer {bearer_token}',
                                'Content-Type': 'application/json'
                               }
-            response = requests.put(url=url, headers=headers,json=data, verify=False)  # Use verify=False to ignore SSL 
+            response = requests.put(url=url, headers=headers,json=data1, verify=False)  # Use verify=False to ignore SSL 
             try:
                 return Response(status=response.status_code,data=response.json())
             except Exception:
@@ -243,7 +226,7 @@ class API_RUD(APIView):
                 return Response(status=response.status_code,data=response.content)
         except Exception:
                  return Response(data={"detail":"raised an Exception"}, status=status.HTTP_404_NOT_FOUND)   
-import datetime
+             
 from .models import UploadedFile
 class ApiSwagger(APIView):
     from rest_framework.parsers import MultiPartParser, FormParser,FileUploadParser    
@@ -270,7 +253,7 @@ class ApiSwagger(APIView):
             except Exception:
                 return Response(status=response.status_code,data=response.content)
         except Exception:
-                 return Response(data={"detail":"raised an Exception"}, status=status.HTTP_404_NOT_FOUND) 
+                return Response(data={"detail":"raised an Exception"}, status=status.HTTP_404_NOT_FOUND) 
              
 
    
@@ -283,7 +266,7 @@ class ApiSwagger(APIView):
             authorization_header = request.META.get("HTTP_AUTHORIZATION")
             uploaded_file = request.FILES.get('apiDefinition')
             print(type(uploaded_file), "CACACACACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc")
-            print(uploaded_file, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+            print(uploaded_file, "MMMMMMMMMMMMMMMMMMMMMMMMM")
             if authorization_header:
                 
                 header_splited = authorization_header.split()
@@ -296,7 +279,6 @@ class ApiSwagger(APIView):
                     headers = {
                                'Authorization': f'Bearer {bearer_token}',
                               }
-          
             #file_serializer = UploadedFileSerializer(data=request.data.get("apiDefinition"))
             #if file_serializer.is_valid():
             #    print("dawdqawd")
@@ -317,7 +299,9 @@ class ApiSwagger(APIView):
             except Exception:
                 return Response(status=response.status_code,data=response.content)
         except Exception:
-                 return Response(data={"detail":"raised an Exception"}, status=status.HTTP_404_NOT_FOUND)     
+                 return Response(data={"detail":"raised an Exception"}, status=status.HTTP_404_NOT_FOUND)   
+             
+               
 # import http.client
 # import json        
 # import http.client

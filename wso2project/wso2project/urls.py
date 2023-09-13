@@ -24,7 +24,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-schema_view = get_swagger_view(title='K8s API')
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='WSO2 APIs')
 
 urlpatterns = [
     path("doc/", schema_view),
